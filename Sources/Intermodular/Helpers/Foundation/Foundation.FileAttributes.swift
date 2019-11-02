@@ -97,7 +97,7 @@ extension FilesystemItem {
     }
 }
 
-extension Path {
+extension FilePath {
     public func resolveFileAttributes() throws -> FileAttributes {
         return FileAttributes(try FileManager.default.attributesOfItem(atPath: stringValue))
     }

@@ -7,11 +7,11 @@ import Swallow
 import Swift
 
 extension CommandLine {
-    public static var workingPath: Path {
+    public static var workingPath: FilePath {
         get {
-            return Path.currentDirectory
+            return FilePath.currentDirectory
         } set {
-            Path.currentDirectory = newValue
+            FilePath.currentDirectory = newValue
         }
     }
 }

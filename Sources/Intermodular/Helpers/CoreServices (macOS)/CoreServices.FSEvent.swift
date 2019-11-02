@@ -16,14 +16,14 @@ public struct FSEvent {
     public static let nowEventID = FSEventStreamEventId(kFSEventStreamEventIdSinceNow)
 
     public var id: FSEventStreamEventId
-    public var path: Path
+    public var path: FilePath
     public var flags: FSEventFlags
     #endif
 }
 
 // MARK: - Helpers -
 
-extension Path {
+extension FilePath {
     #if os(macOS)
     public func watch(_ latency: TimeInterval = 0, queue: DispatchQueue = DispatchQueue.main, callback: (@escaping (FSEvent) -> Void)) -> FSEventWatcher {
         let watcher = FSEventWatcher(paths: [self], latency: latency, queue: queue, callback: callback)
@@ -35,7 +35,7 @@ extension Path {
     #endif
 }
 
-extension Sequence where Self.Element == Path {
+extension Sequence where Self.Element == FilePath {
     #if os(macOS)
     public func watch(_ latency: TimeInterval = 0, queue: DispatchQueue = DispatchQueue.main, callback: (@escaping (FSEvent) -> Void)) -> FSEventWatcher {
         let watcher = FSEventWatcher(paths: .init(self), latency: latency, queue: queue, callback: callback)

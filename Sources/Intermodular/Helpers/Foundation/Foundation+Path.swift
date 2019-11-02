@@ -7,29 +7,29 @@ import Swallow
 import Swift
 
 extension Bundle {
-    public convenience init?(path: Path) {
+    public convenience init?(path: FilePath) {
         self.init(path: path.stringValue)
     }
 }
 
 extension InputStream {
-    public convenience init?(path: Path) {
+    public convenience init?(path: FilePath) {
         self.init(fileAtPath: path.stringValue)
     }
 }
 
 extension OutputStream {
-    public convenience init?(path: Path) {
+    public convenience init?(path: FilePath) {
         self.init(path: path, append: false)
     }
     
-    public convenience init?(path: Path, append shouldAppend: Bool) {
+    public convenience init?(path: FilePath, append shouldAppend: Bool) {
         self.init(toFileAtPath: path.stringValue, append: shouldAppend)
     }
 }
 
 extension URL {
-    public init(path: Path) {
+    public init(path: FilePath) {
         self.init(fileURLWithPath: path.cocoaFilePath)
     }
 }

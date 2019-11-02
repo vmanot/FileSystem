@@ -27,7 +27,7 @@ extension FileLocationResolvable where Self: URLRepresentable {
 // MARK: - Extensions -
 
 extension FileLocationResolvable {
-    public func resolveFilePath() throws -> Path {
+    public func resolveFilePath() throws -> FilePath {
         return .init(fileURL: try resolveFileURL())
     }
 
@@ -42,14 +42,14 @@ extension FileLocation: FileLocationResolvable {
     
 }
 
-extension Path: FileLocationResolvable {
+extension FilePath: FileLocationResolvable {
     
 }
 
 
 extension String: FileLocationResolvable {
     public func resolveFileLocation() throws -> FileLocation {
-        return try Path(stringValue: self).resolveFileLocation()
+        return try FilePath(stringValue: self).resolveFileLocation()
     }
 }
 

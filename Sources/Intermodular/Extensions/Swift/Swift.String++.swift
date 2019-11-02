@@ -5,7 +5,7 @@
 import Swift
 
 extension String {
-    public init(path: Path) {
+    public init(path: FilePath) {
         self = path.stringValue
     }
 }

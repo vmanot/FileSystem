@@ -59,7 +59,7 @@ public enum FilesystemItemType: String {
 
 // MARK: - Helpers -
 
-extension Path {
+extension FilePath {
     public func resolveFileType() throws -> FilesystemItemType {
         return try (-?>(try resolveFileAttributes())[FileAttributeKey.type]).flatMap(FilesystemItemType.init(rawValue:)).unwrap()
     }

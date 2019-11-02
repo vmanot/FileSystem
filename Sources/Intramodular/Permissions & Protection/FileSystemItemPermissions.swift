@@ -25,7 +25,7 @@ extension FilesystemItemPermissions {
 
 // MARK: - Helpers -
 
-extension Path {
+extension FilePath {
     public func resolveFilePermissions() throws -> FilesystemItemPermissions? {
         return FilesystemItemPermissions(try resolveFileAttributes())
     }
