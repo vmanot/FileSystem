@@ -135,7 +135,7 @@ extension FilePath {
         if components.isEmpty {
             self.init(stringValue: ".")
         } else if components.first == FilePath.directorySeparator && components.count > 1 {
-            unmigrated() // self.init(stringValue: components.joined(separator: FilePath.directorySeparator).dropFirst())
+            self.init(stringValue: String(components.joined(separator: FilePath.directorySeparator).dropFirst()))
         } else {
             self.init(stringValue: components.joined(separator: FilePath.directorySeparator))
         }
