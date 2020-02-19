@@ -14,14 +14,14 @@ let package = Package(
         .library(name: "Filesystem", targets: ["Filesystem"])
     ],
     dependencies: [
-        .package(path: "../Compute"),
-        .package(path: "../Concurrency"),
-        .package(path: "../Data"),
-        .package(path: "../FoundationX"),
-        .package(path: "../LinearAlgebra"),
-        .package(path: "../POSIX"),
-        .package(path: "../Runtime"),
-        .package(path: "../Swallow")
+        .package(url: "git@github.com:vmanot/Compute.git", .branch("master")),
+        .package(url: "git@github.com:vmanot/Concurrency.git", .branch("master")),
+        .package(url: "git@github.com:vmanot/Data.git", .branch("master")),
+        .package(url: "git@github.com:vmanot/FoundationX.git", .branch("master")),
+        .package(url: "git@github.com:vmanot/LinearAlgebra.git", .branch("master")),
+        .package(url: "git@github.com:vmanot/POSIX.git", .branch("master")),
+        .package(url: "git@github.com:vmanot/Runtime.git", .branch("master")),
+        .package(url: "git@github.com:vmanot/Swallow.git", .branch("master")),
     ],
     targets: [
         .target(name: "Filesystem", dependencies: ["Compute", "Concurrency", "Data", "FoundationX", "LinearAlgebra", "POSIX", "Runtime", "Swallow"], path: "Sources")
