@@ -13,17 +13,15 @@ import MobileCoreServices
 #endif
 
 import Swallow
-import Swift
+import SwiftUI
 
 public struct UniformTypeIdentifier: Wrapper {
-    public typealias Value = String
-
-    public let value: Value
-
-    public init(_ value: Value) {
+    public let value: String
+    
+    public init(_ value: String) {
         self.value = value
     }
-
+    
     public init?(tag: String, class: UniformTypeTagClass, conformingTo uti: UniformTypeIdentifier? = nil) {
         self.init(nilIfNil: UTTypeCreatePreferredIdentifierForTag(`class`.rawValue as CFString, tag as CFString, uti?.value as CFString?)?.takeRetainedValue() as String?)
     }
@@ -32,7 +30,7 @@ public struct UniformTypeIdentifier: Wrapper {
 extension UniformTypeIdentifier {
     public var isDynamic: Trilean {
         let value = self.value as CFString
-
+        
         return UTTypeIsDeclared(value) ? false : (UTTypeIsDynamic(value) ? true : unknown)
     }
 }
@@ -57,12 +55,32 @@ extension UniformTypeIdentifier: Equatable2 {
     }
 }
 
+// MARK: - API -
+
+extension UniformTypeIdentifier {
+    public static let url = UniformTypeIdentifier(kUTTypeURL as String)
+    public static let fileURL = UniformTypeIdentifier(kUTTypeFileURL as String)
+}
+
+extension View {
+    @available(iOS 13.4, *)
+    @available(tvOS, unavailable)
+    @available(watchOS, unavailable)
+    public func onDrop(of supportedTypes: [UniformTypeIdentifier], delegate: DropDelegate) -> some View {
+        onDrop(of: supportedTypes.map(\.value), delegate: delegate)
+    }
+}
+
 // MARK: - Helpers -
 
 extension SequenceInitiableSequence where Element == UniformTypeIdentifier {
-    public init(tag: String, class tagClass: UniformTypeTagClass, conformingTo uti: UniformTypeIdentifier?) {
+    public init(
+        tag: String,
+        class tagClass: UniformTypeTagClass,
+        conformingTo uti: UniformTypeIdentifier?
+    ) {
         let identifiers = UTTypeCreateAllIdentifiersForTag(tagClass.rawValue as CFString, tag as CFString, uti?.value as CFString?)?.takeRetainedValue() as? [String]
-
+        
         self.init((identifiers ?? []).lazy.map(UniformTypeIdentifier.init))
     }
 }

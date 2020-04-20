@@ -19,12 +19,29 @@ let package = Package(
         .package(url: "git@github.com:vmanot/Data.git", .branch("master")),
         .package(url: "git@github.com:vmanot/FoundationX.git", .branch("master")),
         .package(url: "git@github.com:vmanot/LinearAlgebra.git", .branch("master")),
+        .package(url: "git@github.com:vmanot/Merge.git", .branch("master")),
         .package(url: "git@github.com:vmanot/POSIX.git", .branch("master")),
         .package(url: "git@github.com:vmanot/Runtime.git", .branch("master")),
         .package(url: "git@github.com:vmanot/Swallow.git", .branch("master")),
+        .package(url: "git@github.com:vmanot/Task.git", .branch("master")),
     ],
     targets: [
-        .target(name: "Filesystem", dependencies: ["Compute", "Concurrency", "Data", "FoundationX", "LinearAlgebra", "POSIX", "Runtime", "Swallow"], path: "Sources")
+        .target(
+            name: "Filesystem",
+            dependencies: [
+                "Compute",
+                "Concurrency",
+                "Data",
+                "FoundationX",
+                "LinearAlgebra",
+                "Merge",
+                "POSIX",
+                "Runtime",
+                "Swallow",
+                "Task"
+            ],
+            path: "Sources"
+        )
     ],
     swiftLanguageVersions: [
         .version("5.1")

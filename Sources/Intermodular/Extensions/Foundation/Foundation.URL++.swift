@@ -15,7 +15,7 @@ extension URL {
         return self[[key]]
     }
     
-    public func uti() throws -> UniformTypeIdentifier? {
+    public func toUTI() throws -> UniformTypeIdentifier? {
         return try self[.typeIdentifierKey]
             .unwrap()
             .typeIdentifier.map(UniformTypeIdentifier.init)

@@ -46,7 +46,7 @@ public enum MobileFileProtection: RawRepresentable {
             return FileProtectionType.completeUntilFirstUserAuthentication.rawValue
         }
         #else
-        return impossible()
+        return Never.materialize(reason: .impossible)
         #endif
     }
 }
