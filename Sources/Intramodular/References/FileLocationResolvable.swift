@@ -46,10 +46,9 @@ extension FilePath: FileLocationResolvable {
     
 }
 
-
 extension String: FileLocationResolvable {
     public func resolveFileLocation() throws -> FileLocation {
-        return try FilePath(stringValue: self).resolveFileLocation()
+        return try FilePath(stringValue: NSString(string: self).expandingTildeInPath).resolveFileLocation()
     }
 }
 
