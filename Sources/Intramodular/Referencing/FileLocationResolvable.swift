@@ -3,8 +3,8 @@
 //
 
 import Foundation
-import Swallow
 import Swift
+import System
 
 public protocol FileLocationResolvable {
     func resolveFileLocation() throws -> FileLocation
@@ -20,7 +20,7 @@ extension FileLocationResolvable where Self: URLRepresentable {
             throw FilesystemError.isNotFileURL(url)
         }
         
-        return .init(unvalidated: url.standardizedFileURL)
+        return .init(_unsafe: url.standardizedFileURL)
     }
 }
 
@@ -30,7 +30,7 @@ extension FileLocationResolvable {
     public func resolveFilePath() throws -> FilePath {
         return .init(fileURL: try resolveFileURL())
     }
-
+    
     public func resolveFileURL() throws -> URL {
         return try resolveFileLocation().url
     }
@@ -48,7 +48,7 @@ extension FilePath: FileLocationResolvable {
 
 extension String: FileLocationResolvable {
     public func resolveFileLocation() throws -> FileLocation {
-        return try FilePath(stringValue: NSString(string: self).expandingTildeInPath).resolveFileLocation()
+        return try FilePath(NSString(string: self).expandingTildeInPath).resolveFileLocation()
     }
 }
 

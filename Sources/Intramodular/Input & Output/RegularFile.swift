@@ -11,10 +11,10 @@ public class RegularFile<DataType, AccessMode: FileAccessModeType>: InputOutputR
     public var location: FileLocationResolvable {
         return reference
     }
-
+    
     var reference: FileReference
     var handle: FileHandle
-
+    
     public required init(at location: FileLocationResolvable) throws {
         let url = try location.resolveFileLocation().url
         
@@ -28,7 +28,7 @@ public class RegularFile<DataType, AccessMode: FileAccessModeType>: InputOutputR
             case .update:
                 self.handle = try .init(forUpdating: url)
         }
-
+        
         try super.init(
             descriptor: .init(rawValue: handle.fileDescriptor),
             transferOwnership: false
@@ -68,17 +68,17 @@ extension RegularFile {
     public class func create<Location: FileLocationResolvable>(at location: Location) throws -> Self {
         let url = try location.resolveFileLocation()
         
-        try FileManager.default.createFile(atPath: url.path, contents: nil, attributes: nil).orThrow(CocoaError(.fileWriteUnknown))
+        try FileManager.default.createFile(atPath: url.path.stringValue, contents: nil, attributes: nil).orThrow(CocoaError(.fileWriteUnknown))
         
         return try self.init(at: url)
     }
     
     public class func createIfNecessary<Location: FileLocationResolvable>(at location: Location) throws -> Self {
-        return try FileManager.default.fileExists(atPath: location.resolveFileLocation().path) ? .init(at: location) : create(at: location)
+        return try FileManager.default.fileExists(atPath: location.resolveFileLocation().path.stringValue) ? .init(at: location) : create(at: location)
     }
     
     public func move(to other: FileLocation) throws {
-        try FileManager.default.moveItem(at: resolveFileLocation().cocoaFileURL(), to: other.cocoaFileURL())
+        try FileManager.default.moveItem(at: resolveFileLocation().url, to: other.url)
     }
 }
 

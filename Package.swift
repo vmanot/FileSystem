@@ -5,10 +5,10 @@ import PackageDescription
 let package = Package(
     name: "Filesystem",
     platforms: [
-        .iOS(.v13),
-        .macOS(.v10_15),
-        .tvOS(.v13),
-        .watchOS(.v6)
+        .iOS("14.0"),
+        .macOS("10.16"),
+        .tvOS("14.0"),
+        .watchOS("7.0")
     ],
     products: [
         .library(name: "Filesystem", targets: ["Filesystem"])

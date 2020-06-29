@@ -4,7 +4,7 @@
 
 import Foundation
 import Swallow
-import Swift
+import System
 
 extension Bundle {
     public convenience init?(path: FilePath) {

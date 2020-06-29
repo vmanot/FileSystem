@@ -4,7 +4,7 @@
 
 import Foundation
 import Swallow
-import Swift
+import System
 
 #if os(macOS)
 
@@ -47,12 +47,12 @@ extension FSEventStream {
 }
 
 extension FSEventStream {
-    public func schedule(with runLoop: CFRunLoop, runLoopMode: CFRunLoopMode) {
-        FSEventStreamScheduleWithRunLoop(rawValue, runLoop, runLoopMode.rawValue)
+    public func schedule(with runLoop: RunLoop, runLoopMode: CFRunLoopMode) {
+        FSEventStreamScheduleWithRunLoop(rawValue, runLoop.getCFRunLoop(), runLoopMode.rawValue)
     }
     
-    public func unschedule(from runLoop: CFRunLoop, runLoopMode: CFString) {
-        FSEventStreamUnscheduleFromRunLoop(rawValue, runLoop, runLoopMode)
+    public func unschedule(from runLoop: RunLoop, runLoopMode: CFRunLoopMode) {
+        FSEventStreamUnscheduleFromRunLoop(rawValue, runLoop.getCFRunLoop(), runLoopMode.rawValue)
     }
 }
 

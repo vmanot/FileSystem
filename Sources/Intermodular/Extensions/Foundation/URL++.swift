@@ -3,21 +3,21 @@
 //
 
 import Foundation
-import Swallow
 import Swift
+import UniformTypeIdentifiers
 
 extension URL {
     public subscript(keys: Set<URLResourceKey>) -> Result<URLResourceValues, Error> {
-        return .init(try resourceValues(forKeys: keys))
+        .init(try resourceValues(forKeys: keys))
     }
     
     public subscript(key: URLResourceKey) -> Result<URLResourceValues, Error> {
-        return self[[key]]
+        self[[key]]
     }
     
-    public func toUTI() throws -> UniformTypeIdentifier? {
-        return try self[.typeIdentifierKey]
+    public func toUTI() throws -> UTType? {
+        try self[.typeIdentifierKey]
             .unwrap()
-            .typeIdentifier.map(UniformTypeIdentifier.init)
+            .typeIdentifier.flatMap({ UTType($0) })
     }
 }

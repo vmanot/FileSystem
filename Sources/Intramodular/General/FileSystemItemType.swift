@@ -3,8 +3,8 @@
 //
 
 import Foundation
-import Swallow
 import Swift
+import System
 
 public enum FilesystemItemType: String {
     case blockSpecial
@@ -61,6 +61,6 @@ public enum FilesystemItemType: String {
 
 extension FilePath {
     public func resolveFileType() throws -> FilesystemItemType {
-        return try (-?>(try resolveFileAttributes())[FileAttributeKey.type]).flatMap(FilesystemItemType.init(rawValue:)).unwrap()
+        return try (resolveFileAttributes()[FileAttributeKey.type] as? String).flatMap(FilesystemItemType.init).unwrap()
     }
 }

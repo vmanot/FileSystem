@@ -3,6 +3,7 @@
 //
 
 import Swift
+import System
 
 extension String {
     public init(path: FilePath) {

@@ -6,16 +6,17 @@ import Combine
 import Foundation
 import Merge
 import Swallow
+import UniformTypeIdentifiers
 
 extension NSItemProvider {
     public func loadItem(
-        forTypeIdentifier typeIdentifier: UniformTypeIdentifier,
+        for type: UTType,
         options: [AnyHashable: Any]? = nil
     ) -> Future<NSSecureCoding, Error> {
         .init { attemptToFulfill in
             TODO.whole(.modernize, note: "Use Task over Future")
             
-            _ = self.loadItem(forTypeIdentifier: typeIdentifier.value, options: options) { item, error in
+            self.loadItem(forTypeIdentifier: type.identifier, options: options) { item, error in
                 attemptToFulfill(Result(item, error: error)!)
             }
         }
@@ -35,7 +36,7 @@ extension NSItemProvider {
     }
     
     public func loadURL(relativeTo url: URL? = nil) -> AnyPublisher<URL, Error> {
-        loadItem(forTypeIdentifier: .url)
+        loadItem(for: .url)
             .tryMap({ try cast($0, to: Data.self) })
             .map({ URL(dataRepresentation: $0, relativeTo: url) })
             .unwrap()
@@ -43,7 +44,7 @@ extension NSItemProvider {
     }
     
     public func loadFileURL(relativeTo url: URL? = nil) -> AnyPublisher<URL, Error> {
-        loadItem(forTypeIdentifier: .fileURL)
+        loadItem(for: .fileURL)
             .tryMap({ try cast($0, to: Data.self) })
             .map({ URL(dataRepresentation: $0, relativeTo: url) })
             .unwrap()

@@ -14,7 +14,7 @@ public struct FileReference: FileLocationResolvable {
     }
 
     public func resolveFileLocation() throws -> FileLocation {
-        return .init(unvalidated: rawValue as URL)
+        return .init(_unsafe: rawValue as URL)
     }
 }
 

@@ -8,21 +8,21 @@ import CoreServices
 
 import Foundation
 import Swallow
-import Swift
+import System
 
-public struct FSEventFlags: OptionSet {
-    public typealias RawValue = Int
-
-    public let rawValue: RawValue
-
-    public init(rawValue: RawValue) {
-        self.rawValue = rawValue
+extension FSEvent {
+    public struct Flags: Codable, Hashable, OptionSet {
+        public let rawValue: Int
+        
+        public init(rawValue: Int) {
+            self.rawValue = rawValue
+        }
     }
 }
 
 // MARK: - Protocol Implementations -
 
-extension FSEventFlags: CustomStringConvertibleOptionSet {
+extension FSEvent.Flags: CustomStringConvertibleOptionSet {
     #if os(macOS)
     public static let none = with(rawValue: kFSEventStreamEventFlagNone)
     public static let mustScanSubDirs = with(rawValue: kFSEventStreamEventFlagMustScanSubDirs)
@@ -47,8 +47,8 @@ extension FSEventFlags: CustomStringConvertibleOptionSet {
     public static let ownEvent = with(rawValue: kFSEventStreamEventFlagOwnEvent)
     public static let itemIsHardlink = with(rawValue: kFSEventStreamEventFlagItemIsHardlink)
     public static let itemIsLastHardlink = with(rawValue: kFSEventStreamEventFlagItemIsLastHardlink)
-
-    public static var descriptions: [FSEventFlags: String] = [
+    
+    public static var descriptions: [Self: String] = [
         .none: "none",
         .mustScanSubDirs: "must scan sub-directories",
         .userDropped: "user dropped",
@@ -73,14 +73,7 @@ extension FSEventFlags: CustomStringConvertibleOptionSet {
         .itemIsHardlink: "item is hardlink",
         .itemIsLastHardlink: "item is last hardlink"
     ]
-
     #else
-    public static var descriptions: [FSEventFlags: String] = [:]
+    public static var descriptions: [Self: String] = [:]
     #endif
-}
-
-extension FSEventFlags: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(rawValue)
-    }
 }

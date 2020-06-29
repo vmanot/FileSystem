@@ -3,9 +3,8 @@
 //
 
 import Foundation
-import POSIX
 import Swallow
-import Swift
+import System
 
 public struct FileAttributes: Collection2, ImplementationForwardingMutableWrapper, Initiable, MutableDictionaryProtocol {
     public typealias DictionaryKey = Value.DictionaryKey
@@ -56,7 +55,7 @@ extension FileAttributes {
         return -?>self[.groupOwnerAccountName]
     }
 
-    public var posixFilePermissions: POSIXFilePermissions? {
+    public var posixFilePermissions: FilePermissions? {
         get {
             return self[.posixPermissions].castMap({ .init(rawValue: $0) })
         } set {
@@ -100,5 +99,9 @@ extension FilesystemItem {
 extension FilePath {
     public func resolveFileAttributes() throws -> FileAttributes {
         return FileAttributes(try FileManager.default.attributesOfItem(atPath: stringValue))
+    }
+    
+    public func resolveFilePermissions() throws -> FilePermissions? {
+        try resolveFileAttributes().posixFilePermissions
     }
 }
