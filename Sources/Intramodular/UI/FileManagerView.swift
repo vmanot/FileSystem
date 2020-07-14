@@ -10,15 +10,23 @@ import SwiftUI
 import System
 
 public struct FileManagerView: View {
-    var locations: [FileLocation] {
-        FileManager.default
-            .urls(for: .libraryDirectory, in: .userDomainMask)
-            .map(FileLocation.init(_unsafe:))
+    public let manager: FileManager
+    public let directory: FileManager.SearchPathDirectory
+    public let domainMask: FileManager.SearchPathDomainMask
+    
+    public init(
+        manager: FileManager = .default,
+        directory: FileManager.SearchPathDirectory,
+        domainMask: FileManager.SearchPathDomainMask
+    ) {
+        self.manager = manager
+        self.directory = directory
+        self.domainMask = domainMask
     }
     
     public var body: some View {
         NavigationView {
-            List(locations, id: \.hashValue) { location in
+            List(fileLocations) { location in
                 NavigationLink(destination: FileDirectoryView(root: location)) {
                     Text(location.url.lastPathComponent)
                 }
@@ -27,9 +35,12 @@ public struct FileManagerView: View {
         }
     }
     
-    public init() {
-        
+    private var fileLocations: [FileLocation] {
+        FileManager.default
+            .urls(for: directory, in: domainMask)
+            .map(FileLocation.init(_unsafe:))
     }
+    
 }
 
 #endif

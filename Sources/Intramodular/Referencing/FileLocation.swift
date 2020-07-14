@@ -6,9 +6,13 @@ import Foundation
 import Swift
 import System
 
-public struct FileLocation: Hashable, URLRepresentable {
+public struct FileLocation: Hashable, Identifiable, URLRepresentable {
     public let url: URL
     
+    public var id: some Hashable {
+        url
+    }
+
     @inlinable
     public init?(url: URL) {
         guard url.isFileURL else {
