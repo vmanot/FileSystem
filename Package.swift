@@ -40,7 +40,10 @@ let package = Package(
                 "Swallow",
                 "Task"
             ],
-            path: "Sources"
+            path: "Sources",
+            swiftSettings: [
+                .unsafeFlags(["-Onone"])
+            ]
         )
     ],
     swiftLanguageVersions: [
