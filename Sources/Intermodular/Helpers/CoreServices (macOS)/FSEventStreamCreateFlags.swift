@@ -10,7 +10,6 @@ import MobileCoreServices
 
 import Foundation
 import Swallow
-import Swift
 
 public struct FSEventStreamCreateFlags: RawRepresentable {
     public typealias RawValue = Int

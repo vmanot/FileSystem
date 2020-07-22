@@ -8,7 +8,7 @@ import Cocoa
 
 import Foundation
 import Swallow
-import Swift
+import SwiftUIX
 
 extension FileManager {
     public func suburls(at url: URL) throws -> [URL] {
@@ -26,8 +26,9 @@ extension FileManager {
     }
     
     #if canImport(Cocoa)
+    
     public func acquireSandboxAccess(
-        to location: FileLocation,
+        toFolder location: FileLocation,
         openPanelMessage: String
     ) throws -> FileLocation {
         if isReadableAndWritable(at: location.url) {
@@ -49,11 +50,18 @@ extension FileManager {
                     throw SandboxFolderAccessError()
                 }
             } catch {
-                return try acquireSandboxAccess(to: location.discardingBookmarkData(), openPanelMessage: openPanelMessage)
+                return try acquireSandboxAccess(
+                    toFolder: location.discardingBookmarkData(),
+                    openPanelMessage: openPanelMessage
+                )
             }
         }
         
+        #if os(macOS)
         let openPanel = NSOpenPanel()
+        #else
+        let openPanel = NSOpenPanel_Type.init()
+        #endif
         
         openPanel.directoryURL = location.url
         openPanel.message = openPanelMessage
@@ -67,16 +75,22 @@ extension FileManager {
         
         if let folderUrl = openPanel.urls.first {
             if folderUrl != location {
+                #if os(macOS)
                 let alert = NSAlert()
-                
                 alert.alertStyle = .informational
+                #else
+                let alert = NSAlert_Type.init()
+                alert.alertStyle = 1
+                #endif
+                
                 alert.messageText = "Can't get access to \(location.url.path) folder"
                 alert.informativeText = "Did you choose the right folder?"
+                
                 alert.addButton(withTitle: "Repeat")
                 
                 alert.runModal()
                 
-                return try acquireSandboxAccess(to: location.discardingBookmarkData(), openPanelMessage: openPanelMessage)
+                return try acquireSandboxAccess(toFolder: location.discardingBookmarkData(), openPanelMessage: openPanelMessage)
             }
             
             if isReadableAndWritable(at: folderUrl) {
@@ -91,9 +105,10 @@ extension FileManager {
         }
         
         return try acquireSandboxAccess(
-            to: location.discardingBookmarkData(),
+            toFolder: location.discardingBookmarkData(),
             openPanelMessage: openPanelMessage
         )
     }
+    
     #endif
 }

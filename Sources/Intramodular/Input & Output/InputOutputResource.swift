@@ -7,7 +7,6 @@ import Foundation
 import POSIX
 import Runtime
 import Swallow
-import Swift
 
 open class InputOutputResource: AnyProtocol {
     var descriptor: POSIXIOResourceDescriptor

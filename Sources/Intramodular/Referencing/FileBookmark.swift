@@ -4,7 +4,6 @@
 
 import Foundation
 import Swallow
-import Swift
 
 public class FileBookmark: Codable {
     public private(set) var data: Data

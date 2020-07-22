@@ -4,9 +4,8 @@
 
 import Foundation
 import Swallow
-import Swift
 
-public protocol URLConvertible {
+public protocol URLConvertible: AnyProtocol {
     var url: URL { get }
 }
 

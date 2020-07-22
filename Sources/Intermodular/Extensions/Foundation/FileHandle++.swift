@@ -5,7 +5,6 @@
 import Foundation
 import POSIX
 import Swallow
-import Swift
 
 extension FileHandle {
     public func seekToStartOfFile() {

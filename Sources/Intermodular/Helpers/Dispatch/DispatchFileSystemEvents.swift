@@ -4,7 +4,6 @@
 
 import Foundation
 import Swallow
-import Swift
 
 public struct DispatchFileSystemEvents: opaque_RawRepresentable, Codable, Hashable, RawRepresentable {
     public let rawValue: UInt

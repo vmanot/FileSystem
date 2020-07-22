@@ -7,7 +7,6 @@
 import Cocoa
 import Foundation
 import Swallow
-import Swift
 
 extension NSDraggingInfo {
     public func pathsFromDraggingPasteboard() -> [URL]? {

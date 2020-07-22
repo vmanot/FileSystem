@@ -7,6 +7,5 @@
 import Cocoa
 import Foundation
 import Swallow
-import Swift
 
 #endif

@@ -5,7 +5,6 @@
 import Foundation
 import POSIX
 import Swallow
-import Swift
 
 public enum FilePermission {
     case none

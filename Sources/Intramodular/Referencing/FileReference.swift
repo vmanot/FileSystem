@@ -4,7 +4,6 @@
 
 import Foundation
 import Swallow
-import Swift
 
 public struct FileReference: FileLocationResolvable {
     private var rawValue: NSURL // `NSURL` because `URL` cannot store file references.

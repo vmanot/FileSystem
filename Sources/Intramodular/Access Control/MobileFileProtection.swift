@@ -4,7 +4,6 @@
 
 import Foundation
 import Swallow
-import Swift
 
 public enum MobileFileProtection: RawRepresentable {
     #if os(iOS) || os(tvOS) || os(watchOS)

@@ -4,7 +4,6 @@
 
 import Foundation
 import Swallow
-import Swift
 
 public protocol URLReadable {
     static func read(from _: URL) throws -> Self
