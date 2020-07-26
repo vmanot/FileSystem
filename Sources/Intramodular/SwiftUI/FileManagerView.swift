@@ -10,16 +10,15 @@ import SwiftUI
 import System
 
 public struct FileManagerView: View {
-    public let manager: FileManager
+    @Environment(\.fileManager) var fileManager
+    
     public let directories: [FileManager.SearchPathDirectory]
     public let domainMask: FileManager.SearchPathDomainMask
     
     public init(
-        manager: FileManager = .default,
         directories: [FileManager.SearchPathDirectory],
         domainMask: FileManager.SearchPathDomainMask
     ) {
-        self.manager = manager
         self.directories = directories
         self.domainMask = domainMask
     }
