@@ -7,11 +7,11 @@ import Swallow
 
 public struct FileReference: FileLocationResolvable {
     private var rawValue: NSURL // `NSURL` because `URL` cannot store file references.
-
+    
     public init(url: URL) throws {
         rawValue = try ((url as NSURL).perform(#selector(NSURL.fileReferenceURL))?.takeUnretainedValue() as? NSURL).unwrapOrThrow(FilesystemError.fileNotFound(url))
     }
-
+    
     public func resolveFileLocation() throws -> FileLocation {
         return .init(_unsafe: rawValue as URL)
     }

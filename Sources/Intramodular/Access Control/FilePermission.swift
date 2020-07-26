@@ -6,7 +6,7 @@ import Foundation
 import POSIX
 import Swallow
 
-public enum FilePermission {
+public enum FilePermission: Hashable {
     case none
     case executeOnly
     case writeOnly

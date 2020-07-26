@@ -37,6 +37,8 @@ public struct UpdateAccess: FileAccessModeTypeForUpdating {
     public static let value: FileAccessMode = .update
 }
 
+// MARK: - Auxiliary Implementation -
+
 extension FileHandle {
     public convenience init(forURL url: URL, accessMode mode: FileAccessMode) throws {
         switch mode {

@@ -38,7 +38,7 @@ extension FileManager.SearchPathDirectory: CustomStringConvertible {
                 return "All Libraries"
             case .trashDirectory:
                 return "Trash"
-            
+                
             default: do {
                 if #available(iOS 4.0, macCatalyst 13.0, *) {
                     switch self {
