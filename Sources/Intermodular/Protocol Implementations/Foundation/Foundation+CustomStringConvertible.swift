@@ -5,7 +5,35 @@
 import Foundation
 import Swift
 
-extension FileManager.SearchPathDirectory: CustomStringConvertible {
+extension FileManager.SearchPathDirectory: CaseIterable, CustomStringConvertible {
+    public static let allCases: [Self] = [
+        .applicationDirectory,
+        .demoApplicationDirectory,
+        .developerApplicationDirectory,
+        .adminApplicationDirectory,
+        .libraryDirectory,
+        .developerDirectory,
+        .userDirectory,
+        .documentationDirectory,
+        .documentDirectory,
+        .coreServiceDirectory,
+        .desktopDirectory,
+        .cachesDirectory,
+        .applicationSupportDirectory,
+        .allLibrariesDirectory,
+        .trashDirectory,
+        .autosavedInformationDirectory,
+        .downloadsDirectory,
+        .inputMethodsDirectory,
+        .moviesDirectory,
+        .musicDirectory,
+        .picturesDirectory,
+        .printerDescriptionDirectory,
+        .sharedPublicDirectory,
+        .preferencePanesDirectory,
+        .itemReplacementDirectory,
+    ]
+    
     public var description: String {
         switch self {
             case .applicationDirectory:
