@@ -52,12 +52,11 @@ public struct FileItemRowView: View {
         let location: FileLocation
         
         var body: some View {
-            NavigationLink(destination: FileDirectoryView(root: location)) {
-                Label(
-                    location.url.lastPathComponent,
-                    systemImage: location.hasChildren ? .folderFill : .folder
-                )
-            }
+            Label(
+                location.url.lastPathComponent,
+                systemImage: location.hasChildren ? .folderFill : .folder
+            )
+            .onPress(navigateTo: FileDirectoryView(root: location))
             .disabled(!location.hasChildren || !location.isReachable)
         }
     }
