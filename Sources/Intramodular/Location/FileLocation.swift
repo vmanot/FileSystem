@@ -64,3 +64,32 @@ extension FileLocation {
         lhs != rhs.url
     }
 }
+
+extension FileLocation {
+    public var hasChildren: Bool {
+        do {
+            return try !FileManager.default
+                .suburls(at: url)
+                .map(FileLocation.init(_unsafe:))
+                .filter({ $0.path.exists })
+                .isEmpty
+        } catch {
+            return false
+        }
+    }
+    
+    public var isEmpty: Bool {
+        let result = try? FileManager.default
+            .suburls(at: url)
+            .map(FileLocation.init(_unsafe:))
+            .filter({ $0.path.exists })
+        
+        return result?.isEmpty ?? false
+    }
+}
+
+extension Sequence where Element: FileLocationResolvable {
+    public var isReachable: Bool {
+        !contains(where: { !$0.isReachable })
+    }
+}

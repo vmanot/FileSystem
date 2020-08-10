@@ -21,9 +21,9 @@ public struct FileItemRowView: View {
     public var body: some View {
         Group {
             if try! FilePath(fileURL: location.url).resolveFileType() == .directory {
-                FileDirectoryRowView(location: location)
+                DirectoryView(location: location)
             } else {
-                RegularFileRowView(location: location)
+                RegularFileView(location: location)
             }
         }
         .contextMenu {
@@ -34,38 +34,32 @@ public struct FileItemRowView: View {
                     .foregroundColor(.red)
             }
         }
-    }
-}
-
-public struct RegularFileRowView: View {
-    public let location: FileLocation
-    
-    public init(location: FileLocation) {
-        self.location = location
+        .disabled(!location.isReachable)
     }
     
-    public var body: some View {
-        Text(location.url.lastPathComponent)
-    }
-}
-
-public struct FileDirectoryRowView: View {
-    @State var isNavigated: Bool = false
-    
-    public let location: FileLocation
-    
-    public init(location: FileLocation) {
-        self.location = location
+    struct RegularFileView: View {
+        let location: FileLocation
+        
+        var body: some View {
+            Label(
+                location.url.lastPathComponent,
+                systemImage: .docFill
+            )
+        }
     }
     
-    public var body: some View {
-        Text(location.url.lastPathComponent)
-            .navigate(isActive: $isNavigated) {
-                FileDirectoryView(root: location)
+    struct DirectoryView: View {
+        let location: FileLocation
+        
+        var body: some View {
+            NavigationLink(destination: FileDirectoryView(root: location)) {
+                Label(
+                    location.url.lastPathComponent,
+                    systemImage: location.hasChildren ? .folderFill : .folder
+                )
             }
-            .onTapGesture {
-                isNavigated = true
-            }
+            .disabled(!location.hasChildren || !location.isReachable)
+        }
     }
 }
 

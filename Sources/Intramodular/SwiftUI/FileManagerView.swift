@@ -27,9 +27,13 @@ public struct FileManagerView: View {
         List(locationGroups, id: \.hashValue) { group in
             group.first.ifSome { root in
                 NavigationLink(destination: FileDirectoryView(root: root)) {
-                    Text(root.url.lastPathComponent)
+                    Label(
+                        root.url.lastPathComponent,
+                        systemImage: root.hasChildren ? .folderFill : .folder
+                    )
                 }
             }
+            .disabled(!group.isReachable)
         }
         .navigationBarTitle("Files")
     }
@@ -56,6 +60,7 @@ struct FileManagerEnvironmentKey: EnvironmentKey {
 }
 
 extension EnvironmentValues {
+    @inlinable
     public var fileManager: FileManager {
         get {
             self[FileManagerEnvironmentKey.self]

@@ -27,6 +27,16 @@ extension FileLocationResolvable where Self: URLRepresentable {
 // MARK: - Extensions -
 
 extension FileLocationResolvable {
+    public var isReachable: Bool {
+        do {
+            return try resolveFileLocation().url.checkResourceIsReachable()
+        } catch {
+            return false
+        }
+    }
+}
+
+extension FileLocationResolvable {
     public func resolveFilePath() throws -> FilePath {
         return .init(fileURL: try resolveFileURL())
     }
