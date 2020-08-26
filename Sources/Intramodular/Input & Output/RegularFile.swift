@@ -5,11 +5,16 @@
 import Data
 import Foundation
 import POSIX
-import Swift
+import Swallow
+import System
 
 public class RegularFile<DataType, AccessMode: FileAccessModeType>: InputOutputResource {
     public var location: FileLocationResolvable {
-        return reference
+        reference
+    }
+    
+    public var path: FilePath {
+        FilePath(reference.url.path)
     }
     
     var reference: FileReference
@@ -18,7 +23,7 @@ public class RegularFile<DataType, AccessMode: FileAccessModeType>: InputOutputR
     public required init(at location: FileLocationResolvable) throws {
         let url = try location.resolveFileLocation().url
         
-        self.reference = try .init(url: url)
+        self.reference = try FileReference(url: url).unwrap()
         
         switch AccessMode.value {
             case .read:
@@ -90,7 +95,7 @@ extension RegularFile: FileLocationResolvable {
     }
 }
 
-// MARK: - Helpers -
+// MARK: - Auxiliary Implementation -
 
 extension RegularFile where AccessMode: FileAccessModeTypeForReading, DataType: DataDecodable {
     public func data(using strategy: DataType.DataDecodingStrategy) throws -> DataType {
@@ -113,5 +118,23 @@ extension RegularFile where AccessMode: FileAccessModeTypeForWriting, DataType: 
 extension RegularFile where AccessMode: FileAccessModeTypeForWriting, DataType: DataEncodableWithDefaultStrategy {
     public func write(_ data: DataType, using strategy: DataType.DataEncodingStrategy = DataType.defaultDataEncodingStrategy) throws {
         try set(rawData: data.data(using: strategy))
+    }
+}
+
+// MARK: - Helpers -
+
+extension RegularFile where AccessMode: FileAccessModeTypeForReading, DataType == String {
+    public var utf8Data: String {
+        try! data(using: .init(encoding: .utf8))
+    }
+}
+
+extension RegularFile where AccessMode: FileAccessModeTypeForUpdating, DataType == String {
+    public var utf8Data: String {
+        get {
+            try! data(using: .init(encoding: .utf8))
+        } set {
+            try! set(rawData: newValue.data(using: .init(encoding: .utf8, allowLossyConversion: false)))
+        }
     }
 }

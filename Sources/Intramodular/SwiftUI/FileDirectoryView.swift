@@ -11,34 +11,33 @@ import System
 
 @available(iOS 14.0, *)
 public struct FileDirectoryView: View {
-    public let root: [FileLocation]
-    
-    public init(root: [FileLocation]) {
-        self.root = root
-    }
-    
-    public init(root: FileLocation) {
-        self.root = [root]
-    }
+    public let root: FileLocation
     
     private var title: String {
-        if let first = root.first, root.count == 1 {
-            return first.path.fileName
-        } else {
-            return "Files"
-        }
+        root.path.fileName
     }
     
+    @ViewBuilder
     public var body: some View {
-        List {
-            OutlineGroup(
-                root.flatMap({ $0.children ?? [] }),
-                id: \.hashValue,
-                children: \.children,
-                content: FileItemRowView.init
-            )
-            .navigationBarTitle(Text(title), displayMode: .inline)
+        ZStack {
+            if root.hasChildren {
+                List {
+                    OutlineGroup(
+                        root.children ?? [],
+                        id: \.hashValue,
+                        children: \.children,
+                        content: FileItemRowView.init
+                    )
+                }
+            } else {
+                Text("No Files")
+                    .font(.title)
+                    .foregroundColor(.secondary)
+                    .fixedSize()
+                    .padding(.bottom)
+            }
         }
+        .navigationTitle(Text(title))
     }
 }
 

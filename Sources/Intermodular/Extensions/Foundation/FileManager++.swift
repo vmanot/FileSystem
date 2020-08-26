@@ -15,8 +15,24 @@ extension FileManager {
         try contentsOfDirectory(atPath: url.path).map({ url.appendingPathComponent($0) })
     }
     
+    public func isDirectory(at url: URL) -> Bool {
+        var isDirectory = ObjCBool(false)
+        
+        guard fileExists(atPath: url.path, isDirectory: &isDirectory) else {
+            return false
+        }
+        
+        return isDirectory.boolValue
+    }
+    
     public func isReadableAndWritable(at url: URL) -> Bool {
-        isReadableFile(atPath: url.path) && isWritableFile(atPath: url.path)
+        var url = url
+        
+        if isDirectory(at: url) && !url.path.hasSuffix("/") {
+            url = URL(FilePath(url.path.appending("/")))!
+        }
+        
+        return isReadableFile(atPath: url.path) && isWritableFile(atPath: url.path)
     }
 }
 
@@ -28,9 +44,11 @@ extension FileManager {
     #if canImport(Cocoa)
     
     public func acquireSandboxAccess(
-        toFolder location: FileLocation,
+        toFolder location: FileLocationResolvable,
         openPanelMessage: String
     ) throws -> FileLocation {
+        let location = try location.resolveFileLocation()
+        
         if isReadableAndWritable(at: location.url) {
             return location
         }

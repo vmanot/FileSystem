@@ -14,8 +14,6 @@ extension NSItemProvider {
         options: [AnyHashable: Any]? = nil
     ) -> Future<NSSecureCoding, Error> {
         .init { attemptToFulfill in
-            TODO.whole(.modernize, note: "Use Task over Future")
-            
             self.loadItem(forTypeIdentifier: type.identifier, options: options) { item, error in
                 attemptToFulfill(Result(item, error: error)!)
             }
@@ -27,8 +25,6 @@ extension NSItemProvider {
         completionHandler: @escaping (T?, Error?) -> Void
     ) -> Future<T, Error> {
         .init { attemptToFulfill in
-            TODO.whole(.modernize, note: "Use Task over Future")
-            
             _ = self.loadObject(ofClass: T.self) { item, error in
                 attemptToFulfill(Result(item, error: error)!)
             }

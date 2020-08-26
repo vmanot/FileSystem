@@ -26,18 +26,13 @@ public struct FileItemRowView: View {
                 RegularFileView(location: location)
             }
         }
-        .contextMenu {
-            TryButton {
-                try fileManager.removeItem(at: location.url)
-            } label: {
-                Text("Delete")
-                    .foregroundColor(.red)
-            }
-        }
         .disabled(!location.isReachable)
     }
     
     struct RegularFileView: View {
+        @Environment(\.presenter) var presenter
+        @Environment(\.fileManager) var fileManager
+
         let location: FileLocation
         
         var body: some View {
@@ -45,10 +40,16 @@ public struct FileItemRowView: View {
                 location.url.lastPathComponent,
                 systemImage: .docFill
             )
+            .contextMenu {
+                Label("Share", systemImage: .squareAndArrowUp)
+                    .onPress(present: AppActivityView(activityItems: [location.url]))
+            }
         }
     }
     
     struct DirectoryView: View {
+        @Environment(\.fileManager) var fileManager
+
         let location: FileLocation
         
         var body: some View {
@@ -58,6 +59,14 @@ public struct FileItemRowView: View {
             )
             .onPress(navigateTo: FileDirectoryView(root: location))
             .disabled(!location.hasChildren || !location.isReachable)
+            .contextMenu {
+                TryButton {
+                    try fileManager.removeItem(at: location.url)
+                } label: {
+                    Text("Delete")
+                        .foregroundColor(.red)
+                }
+            }
         }
     }
 }

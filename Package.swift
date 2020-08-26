@@ -6,7 +6,7 @@ let package = Package(
     name: "Filesystem",
     platforms: [
         .iOS("14.0"),
-        .macOS("10.16"),
+        .macOS("11.0"),
         .tvOS("14.0"),
         .watchOS("7.0")
     ],

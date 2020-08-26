@@ -6,7 +6,7 @@ import Foundation
 import Swallow
 import System
 
-public struct FileAttributes: Collection2, ImplementationForwardingMutableWrapper, Initiable, MutableDictionaryProtocol {
+public struct FileAttributes: Collection, ImplementationForwardingMutableWrapper, Initiable, MutableDictionaryProtocol {
     public typealias DictionaryKey = Value.DictionaryKey
     public typealias DictionaryValue = Value.DictionaryValue
     public typealias Element = Value.Element
@@ -14,7 +14,7 @@ public struct FileAttributes: Collection2, ImplementationForwardingMutableWrappe
     public typealias Iterator = Value.Iterator
     public typealias SubSequence = Value.SubSequence
     public typealias Value = [FileAttributeKey: Any]
-
+    
     public var value: Value
     
     public init(_ value: Value) {
@@ -32,55 +32,55 @@ extension FileAttributes {
     }
 }
 
-// MARK: - Extensions - 
+// MARK: - Extensions -
 
 extension FileAttributes {
     public var fileSize: UInt64? {
-        return -?>self[.size]
+        self[.size] as? UInt64
     }
-
+    
     public var dateModified: Date? {
-        return -?>self[.modificationDate]
+        self[.modificationDate] as? Date
     }
     
     public var fileReferenceCount: UInt? {
-        return -?>self[.referenceCount]
+        self[.referenceCount] as? UInt
     }
-
+    
     public var ownerAccountName: String? {
-        return -?>self[.ownerAccountName]
+        self[.ownerAccountName] as? String
     }
     
     public var groupOwnerAccountName: String? {
-        return -?>self[.groupOwnerAccountName]
+        self[.groupOwnerAccountName] as? String
     }
-
+    
     public var posixFilePermissions: FilePermissions? {
         get {
-            return self[.posixPermissions].castMap({ .init(rawValue: $0) })
+            self[.posixPermissions].castMap({ .init(rawValue: $0) })
         } set {
             self[.posixPermissions] = newValue?.rawValue
         }
     }
-
+    
     public var systemFileNumber: UInt? {
-        return -?>self[.systemFileNumber]
+        self[.systemFileNumber] as? UInt
     }
-
+    
     public var extensionIsHidden: Bool? {
-        return -?>self[.extensionHidden]
+        self[.extensionHidden] as? Bool
     }
-
+    
     public var dateCreated: Date? {
-        return -?>self[.creationDate]
+        self[.creationDate] as? Date
     }
     
     public var ownerAccountID: UInt? {
-        return -?>self[.ownerAccountID]
+        self[.ownerAccountID] as? UInt
     }
     
     public var groupOwnerAccountID: UInt? {
-        return -?>self[.groupOwnerAccountID]
+        self[.groupOwnerAccountID] as? UInt
     }
 }
 
@@ -90,7 +90,7 @@ extension FilesystemItem {
     public func attributes() throws -> FileAttributes {
         return .init(try FileManager.default.attributesOfItem(atPath: resolveFilePath().stringValue))
     }
-
+    
     public func setAttributes(_ attributes: FileAttributes) throws {
         return try FileManager.default.setAttributes(attributes.value, ofItemAtPath: resolveFilePath().stringValue)
     }
