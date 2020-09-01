@@ -30,6 +30,6 @@ extension OutputStream {
 
 extension URL {
     public init(path: FilePath) {
-        self.init(fileURLWithPath: path.cocoaFilePath)
+        self.init(fileURLWithPath: path.standardized.stringValue)
     }
 }

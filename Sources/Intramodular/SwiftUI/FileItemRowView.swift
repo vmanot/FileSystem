@@ -5,7 +5,7 @@
 #if canImport(SwiftUI) && (os(iOS) || targetEnvironment(macCatalyst))
 
 import Foundation
-import Swift
+import Swallow
 import SwiftUIX
 import System
 
@@ -32,7 +32,7 @@ public struct FileItemRowView: View {
     struct RegularFileView: View {
         @Environment(\.presenter) var presenter
         @Environment(\.fileManager) var fileManager
-
+        
         let location: FileLocation
         
         var body: some View {
@@ -41,23 +41,48 @@ public struct FileItemRowView: View {
                 systemImage: .docFill
             )
             .contextMenu {
-                Label("Share", systemImage: .squareAndArrowUp)
-                    .onPress(present: AppActivityView(activityItems: [location.url]))
+                Section {
+                    Button("Copy", systemImage: .docOnDoc) {
+                        TODO.unimplemented
+                    }
+                    
+                    Button("Duplicate", systemImage: .plusSquareOnSquare) {
+                        TODO.unimplemented
+                    }
+                    
+                    Button("Move", systemImage: .folder) {
+                        TODO.unimplemented
+                    }
+                    
+                    Button("Delete", systemImage: .trash) {
+                        try! fileManager.removeItem(at: location.url)
+                    }
+                    .foregroundColor(.red)
+                    .disabled(!fileManager.isWritableFile(atPath: location.path.stringValue))
+                }
+                
+                PresentationLink(destination: AppActivityView(activityItems: [location.url])) {
+                    Label("Share", systemImage: .squareAndArrowUp)
+                }
             }
         }
     }
     
     struct DirectoryView: View {
         @Environment(\.fileManager) var fileManager
-
+        
         let location: FileLocation
         
         var body: some View {
-            Label(
-                location.url.lastPathComponent,
-                systemImage: location.hasChildren ? .folderFill : .folder
-            )
-            .onPress(navigateTo: FileDirectoryView(root: location))
+            HStack {
+                Label(
+                    location.url.lastPathComponent,
+                    systemImage: location.hasChildren ? .folderFill : .folder
+                )
+                
+                Spacer()
+            }
+            .onPress(navigateTo: FileDirectoryView(location))
             .disabled(!location.hasChildren || !location.isReachable)
             .contextMenu {
                 TryButton {

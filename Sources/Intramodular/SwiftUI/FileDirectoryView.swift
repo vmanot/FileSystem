@@ -10,20 +10,20 @@ import SwiftUIX
 import System
 
 @available(iOS 14.0, *)
-public struct FileDirectoryView: View {
-    public let root: FileLocation
+public struct FileDirectoryView: FileLocationInitiable, View {
+    public let location: FileLocation
     
-    private var title: String {
-        root.path.fileName
+    public init(_ location: FileLocation) {
+        self.location = location
     }
     
     @ViewBuilder
     public var body: some View {
         ZStack {
-            if root.hasChildren {
+            if location.hasChildren {
                 List {
                     OutlineGroup(
-                        root.children ?? [],
+                        location.children ?? [],
                         id: \.hashValue,
                         children: \.children,
                         content: FileItemRowView.init
@@ -37,7 +37,7 @@ public struct FileDirectoryView: View {
                     .padding(.bottom)
             }
         }
-        .navigationTitle(Text(title))
+        .navigationTitle(Text(location.path.lastComponent))
     }
 }
 
