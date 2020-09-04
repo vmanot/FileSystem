@@ -31,7 +31,7 @@ public struct FileLocation: Hashable, Identifiable, URLRepresentable {
     }
     
     public init?(url: URL) {
-        self.init(url: url, bookmarkData: nil)
+        self.init(url: url, bookmarkData: try? url.bookmarkData())
     }
     
     @inlinable

@@ -2,8 +2,8 @@
 // Copyright (c) Vatsal Manot
 //
 
-import Concurrency
 import Foundation
+import Merge
 import POSIX
 import Runtime
 import Swift

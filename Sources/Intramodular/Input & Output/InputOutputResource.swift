@@ -2,8 +2,8 @@
 // Copyright (c) Vatsal Manot
 //
 
-import Concurrency
 import Foundation
+import Merge
 import POSIX
 import Runtime
 import Swallow
@@ -11,7 +11,7 @@ import Swallow
 open class InputOutputResource: AnyProtocol {
     var descriptor: POSIXIOResourceDescriptor
     var descriptorIsOwned: Bool
-
+    
     public init(
         descriptor: POSIXIOResourceDescriptor,
         transferOwnership: Bool = true
