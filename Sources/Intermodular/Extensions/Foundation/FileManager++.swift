@@ -11,11 +11,15 @@ import Swallow
 import SwiftUIX
 
 extension FileManager {
-    public func suburls(at url: URL) throws -> [URL] {
-        try contentsOfDirectory(atPath: url.path).map({ url.appendingPathComponent($0) })
+    public func suburls<T: URLRepresentable>(at location: T) throws -> [T] {
+        try contentsOfDirectory(atPath: location.url.path)
+            .lazy
+            .map({ location.url.appendingPathComponent($0) })
+            .map({ try T(url: $0).unwrap() })
     }
     
-    public func isDirectory(at url: URL) -> Bool {
+    public func isDirectory<T: URLRepresentable>(at location: T) -> Bool {
+        let url = location.url
         var isDirectory = ObjCBool(false)
         
         guard fileExists(atPath: url.path, isDirectory: &isDirectory) else {
@@ -25,14 +29,60 @@ extension FileManager {
         return isDirectory.boolValue
     }
     
-    public func isReadableAndWritable(at url: URL) -> Bool {
-        var url = url
+    public func isReadableAndWritable<T: URLRepresentable>(at location: T) -> Bool {
+        var url = location.url
         
         if isDirectory(at: url) && !url.path.hasSuffix("/") {
             url = URL(FilePath(url.path.appending("/")))!
         }
         
         return isReadableFile(atPath: url.path) && isWritableFile(atPath: url.path)
+    }
+}
+
+extension FileManager {
+    public func enumerateRecursively<T: URLRepresentable>(
+        at location: T,
+        includingPropertiesForKeys keys: [URLResourceKey]? = nil,
+        options mask: FileManager.DirectoryEnumerationOptions = [],
+        body: (T) throws -> Void
+    ) throws {
+        let url = location.url
+        
+        if !isDirectory(at: url) {
+            return try body(location)
+        }
+        
+        var errorEncountered: Error? = nil
+        
+        guard let enumerator = enumerator(
+            at: url,
+            includingPropertiesForKeys: keys,
+            options: mask,
+            errorHandler: { url, error in
+                errorEncountered = error
+                
+                return false
+            }
+        ) else {
+            return
+        }
+        
+        var locations: [T] = []
+        
+        for case let fileURL as URL in enumerator {
+            if let keys = keys {
+                let _ = try fileURL.resourceValues(forKeys: .init(keys))
+            }
+            
+            locations.append(try T.init(url: fileURL).unwrap())
+        }
+        
+        if let error = errorEncountered {
+            throw error
+        }
+        
+        try locations.forEach(body)
     }
 }
 
