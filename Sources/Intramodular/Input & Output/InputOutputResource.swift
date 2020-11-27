@@ -29,7 +29,7 @@ open class InputOutputResource: AnyProtocol {
     }
 }
 
-// MARK: - Protocol Implementations -
+// MARK: - Protocol Conformances -
 
 extension InputOutputResource: CustomStringConvertible {
     open var description: String {

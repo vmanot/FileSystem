@@ -41,6 +41,13 @@ public class RegularFile<DataType, AccessMode: FileAccessModeType>: InputOutputR
     }
 }
 
+extension RegularFile where AccessMode == UpdateAccess {
+    @_disfavoredOverload
+    public convenience init(at location: FileLocationResolvable) throws {
+        try self.init(at: location)
+    }
+}
+
 // MARK: - Extensions -
 
 extension RegularFile where AccessMode: FileAccessModeTypeForReading {
@@ -70,7 +77,7 @@ extension RegularFile where AccessMode: FileAccessModeTypeForUpdating {
 }
 
 extension RegularFile {
-    public class func create<Location: FileLocationResolvable>(at location: Location) throws -> Self {
+    public static func create<Location: FileLocationResolvable>(at location: Location) throws -> Self {
         let url = try location.resolveFileLocation()
         
         try FileManager.default.createFile(atPath: url.path.stringValue, contents: nil, attributes: nil).orThrow(CocoaError(.fileWriteUnknown))
@@ -78,7 +85,7 @@ extension RegularFile {
         return try self.init(at: url)
     }
     
-    public class func createIfNecessary<Location: FileLocationResolvable>(at location: Location) throws -> Self {
+    public static func createIfNecessary<Location: FileLocationResolvable>(at location: Location) throws -> Self {
         return try FileManager.default.fileExists(atPath: location.resolveFileLocation().path.stringValue) ? .init(at: location) : create(at: location)
     }
     
@@ -87,7 +94,7 @@ extension RegularFile {
     }
 }
 
-// MARK: - Protocol Implementations -
+// MARK: - Protocol Conformances -
 
 extension RegularFile: FileLocationResolvable {
     public func resolveFileLocation() throws -> FileLocation {

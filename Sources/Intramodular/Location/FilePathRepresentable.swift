@@ -11,7 +11,7 @@ public protocol FilePathRepresentable {
     init?(path: FilePath)
 }
 
-// MARK: - Concrete Implementations -
+// MARK: - Conformances -
 
 extension FilePath: FilePathRepresentable {
     public var path: FilePath {

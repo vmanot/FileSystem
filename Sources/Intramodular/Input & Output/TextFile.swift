@@ -8,8 +8,18 @@ import POSIX
 import Runtime
 import Swift
 
-public class TextFile<AccessMode: FileAccessModeType, Encoding: StringEncodingType>: RegularFile<String, AccessMode> {
+public class TextFile<Encoding: StringEncodingType, AccessMode: FileAccessModeType>: RegularFile<String, AccessMode> {
+    
+}
 
+extension TextFile where AccessMode == UpdateAccess, Encoding == UTF8 {
+    @_disfavoredOverload
+    public convenience init(
+        at location: FileLocationResolvable,
+        _: Void = ()
+    ) throws {
+        try self.init(at: location)
+    }
 }
 
 extension TextFile where AccessMode: FileAccessModeTypeForReading {
@@ -25,7 +35,7 @@ extension TextFile where AccessMode: FileAccessModeTypeForWriting {
 }
 
 extension TextFile where AccessMode: FileAccessModeTypeForUpdating {
-    public var unsafelyCodedData: String {
+    public var unsafelyAccessedData: String {
         get {
             return try! data()
         } set {

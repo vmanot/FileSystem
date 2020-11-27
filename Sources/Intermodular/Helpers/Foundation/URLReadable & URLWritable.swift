@@ -15,7 +15,7 @@ public protocol URLWritable {
 
 public typealias URLReadableWritable = URLReadable & URLWritable
 
-// MARK: - Concrete Implementations -
+// MARK: - Conformances -
 
 extension Array: URLReadable, URLWritable where Element == AnyObject {
     public static func read(from url: URL) throws -> Array {

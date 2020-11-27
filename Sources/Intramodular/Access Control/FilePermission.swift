@@ -21,7 +21,7 @@ public protocol StaticFilePermission: Static {
     static var value: FilePermission { get }
 }
 
-// MARK: - Concrete Implementations -
+// MARK: - Conformances -
 
 public struct ExecuteOnly: StaticFilePermission {
     public static let value: FilePermission = .executeOnly

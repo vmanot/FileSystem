@@ -6,11 +6,25 @@
 import Cocoa
 #endif
 
-import Foundation
+import FoundationX
 import Swallow
 import SwiftUIX
 
 extension FileManager {
+    public func documentsDirectoryURL(forUbiquityContainerIdentifier: String?) throws -> URL? {
+        guard let url = url(forUbiquityContainerIdentifier: forUbiquityContainerIdentifier)?.appendingPathComponent("Documents") else {
+            return nil
+        }
+        
+        guard !FileManager.default.fileExists(atPath: url.path, isDirectory: nil) else {
+            return url
+        }
+        
+        try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+        
+        return url
+    }
+    
     public func suburls<T: URLRepresentable>(at location: T) throws -> [T] {
         try contentsOfDirectory(atPath: location.url.path)
             .lazy

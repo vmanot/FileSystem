@@ -8,7 +8,7 @@ public protocol StringEncodingType {
     static var encodingTypeValue: String.Encoding { get }
 }
 
-// MAKR: - Concrete Implementations -
+// MAKR: - Conformances -
 
 extension UTF8: StringEncodingType {
     public static let encodingTypeValue = String.Encoding.utf8
