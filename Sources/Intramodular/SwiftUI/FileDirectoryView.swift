@@ -29,6 +29,7 @@ public struct FileDirectoryView: FileLocationInitiable, View {
                         content: FileItemRowView.init
                     )
                 }
+                .listStyle(InsetGroupedListStyle())
             } else {
                 Text("No Files")
                     .font(.title)
