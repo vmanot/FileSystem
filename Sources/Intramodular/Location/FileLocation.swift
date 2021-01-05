@@ -48,7 +48,7 @@ extension FileLocation: Codable {
         case url
         case bookmarkData
     }
-
+    
     public func encode(to encoder: Encoder) throws {
         if let bookmarkData = bookmarkData {
             var container = encoder.container(keyedBy: CodingKeys.self)

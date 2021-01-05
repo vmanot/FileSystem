@@ -23,7 +23,7 @@ public protocol FileAccessModeTypeForReading: FileAccessModeType {
     static var value: FileAccessMode { get }
 }
 
-public typealias FileAccessModeTypeForUpdating = FileAccessModeTypeForReading & FileAccessModeTypeForWriting
+// MARK: - Conformances -
 
 public struct ReadAccess: FileAccessModeTypeForReading {
     public static let value: FileAccessMode = .read
@@ -51,3 +51,7 @@ extension FileHandle {
         }
     }
 }
+
+// MARK: - Helpers -
+
+public typealias FileAccessModeTypeForUpdating = FileAccessModeTypeForReading & FileAccessModeTypeForWriting

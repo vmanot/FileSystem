@@ -8,7 +8,7 @@ import POSIX
 import Runtime
 import Swallow
 
-open class InputOutputResource: AnyProtocol {
+open class InputOutputResource {
     var descriptor: POSIXIOResourceDescriptor
     var descriptorIsOwned: Bool
     

@@ -9,17 +9,7 @@ import Runtime
 import Swift
 
 public class TextFile<Encoding: StringEncodingType, AccessMode: FileAccessModeType>: RegularFile<String, AccessMode> {
-    
-}
 
-extension TextFile where AccessMode == UpdateAccess, Encoding == UTF8 {
-    @_disfavoredOverload
-    public convenience init(
-        at location: FileLocationResolvable,
-        _: Void = ()
-    ) throws {
-        try self.init(at: location)
-    }
 }
 
 extension TextFile where AccessMode: FileAccessModeTypeForReading {

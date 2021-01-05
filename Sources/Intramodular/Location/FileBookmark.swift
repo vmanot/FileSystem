@@ -39,7 +39,7 @@ extension FileBookmark {
 
 public final class MinimalFileBookmark: FileBookmark {
     fileprivate override class func bookmarkCreationOptions() -> NSURL.BookmarkCreationOptions {
-        return .minimalBookmark
+        .minimalBookmark
     }
 }
 
@@ -47,7 +47,7 @@ public final class MinimalFileBookmark: FileBookmark {
 
 public class SecureFileBookmark: FileBookmark {
     public override class func bookmarkCreationOptions() -> NSURL.BookmarkCreationOptions {
-        return .withSecurityScope
+        .withSecurityScope
     }
     
     fileprivate override class func renew(url: URL) throws -> Data {
