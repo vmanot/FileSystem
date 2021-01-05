@@ -21,7 +21,6 @@ let package = Package(
         .package(url: "https://github.com/vmanot/POSIX.git", .branch("master")),
         .package(url: "https://github.com/vmanot/Runtime.git", .branch("master")),
         .package(url: "https://github.com/vmanot/Swallow.git", .branch("master")),
-        .package(url: "https://github.com/vmanot/Task.git", .branch("master")),
     ],
     targets: [
         .target(
@@ -33,8 +32,7 @@ let package = Package(
                 "Merge",
                 "POSIX",
                 "Runtime",
-                "Swallow",
-                "Task"
+                "Swallow"
             ],
             path: "Sources"
         )
