@@ -3,13 +3,10 @@
 //
 
 import Foundation
-import Merge
-import POSIX
-import Runtime
 import Swift
 
 public class TextFile<Encoding: StringEncodingType, AccessMode: FileAccessModeType>: RegularFile<String, AccessMode> {
-
+    
 }
 
 extension TextFile where AccessMode: FileAccessModeTypeForReading {

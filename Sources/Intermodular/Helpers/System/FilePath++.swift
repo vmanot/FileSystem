@@ -5,7 +5,7 @@
 import Foundation
 import System
 
-extension FilePath {    
+extension FilePath {
     public var lastComponent: String {
         get {
             url.lastPathComponent

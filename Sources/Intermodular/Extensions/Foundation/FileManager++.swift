@@ -107,6 +107,7 @@ extension FileManager {
     
     #if canImport(Cocoa)
     
+    @discardableResult
     public func acquireSandboxAccess(
         toFolder location: FileLocationResolvable,
         openPanelMessage: String
@@ -193,4 +194,12 @@ extension FileManager {
     }
     
     #endif
+}
+
+extension FileManager {
+    public func removeItemIfNecessary(at url: URL) throws {
+        if fileExists(atPath: url.path) {
+            try removeItem(at: url)
+        }
+    }
 }
