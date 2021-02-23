@@ -197,6 +197,10 @@ extension FileManager {
 }
 
 extension FileManager {
+    public func removeItem(at path: FilePath) throws {
+        try removeItem(at: URL(path).unwrap())
+    }
+    
     public func removeItemIfNecessary(at url: URL) throws {
         if fileExists(atPath: url.path) {
             try removeItem(at: url)
