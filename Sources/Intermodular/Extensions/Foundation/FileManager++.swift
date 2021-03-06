@@ -11,25 +11,8 @@ import Swallow
 import SwiftUIX
 
 extension FileManager {
-    public func documentsDirectoryURL(forUbiquityContainerIdentifier: String?) throws -> URL? {
-        guard let url = url(forUbiquityContainerIdentifier: forUbiquityContainerIdentifier)?.appendingPathComponent("Documents") else {
-            return nil
-        }
-        
-        guard !FileManager.default.fileExists(atPath: url.path, isDirectory: nil) else {
-            return url
-        }
-        
-        try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
-        
-        return url
-    }
-    
-    public func suburls<T: URLRepresentable>(at location: T) throws -> [T] {
-        try contentsOfDirectory(atPath: location.url.path)
-            .lazy
-            .map({ location.url.appendingPathComponent($0) })
-            .map({ try T(url: $0).unwrap() })
+    public func fileExists(at url: URL) -> Bool {
+        fileExists(atPath: url.path)
     }
     
     public func isDirectory<T: URLRepresentable>(at location: T) -> Bool {
@@ -52,9 +35,14 @@ extension FileManager {
         
         return isReadableFile(atPath: url.path) && isWritableFile(atPath: url.path)
     }
-}
 
-extension FileManager {
+    public func suburls<T: URLRepresentable>(at location: T) throws -> [T] {
+        try contentsOfDirectory(atPath: location.url.path)
+            .lazy
+            .map({ location.url.appendingPathComponent($0) })
+            .map({ try T(url: $0).unwrap() })
+    }
+
     public func enumerateRecursively<T: URLRepresentable>(
         at location: T,
         includingPropertiesForKeys keys: [URLResourceKey]? = nil,
@@ -97,6 +85,28 @@ extension FileManager {
         }
         
         try locations.forEach(body)
+    }
+}
+
+extension FileManager {
+    public func createDirectoryIfNecessary(at url: URL) throws {
+        guard !fileExists(at: url) else {
+            return
+        }
+        
+        try createDirectory(at: url, withIntermediateDirectories: false, attributes: nil)
+    }
+    
+    public func removeItem(at path: FilePath) throws {
+        try removeItem(at: URL(path).unwrap())
+    }
+    
+    public func removeItemIfNecessary(at url: URL) throws {
+        guard !fileExists(at: url) else {
+            return
+        }
+        
+        try removeItem(at: url)
     }
 }
 
@@ -197,13 +207,17 @@ extension FileManager {
 }
 
 extension FileManager {
-    public func removeItem(at path: FilePath) throws {
-        try removeItem(at: URL(path).unwrap())
-    }
-    
-    public func removeItemIfNecessary(at url: URL) throws {
-        if fileExists(atPath: url.path) {
-            try removeItem(at: url)
+    public func documentsDirectoryURL(forUbiquityContainerIdentifier: String?) throws -> URL? {
+        guard let url = url(forUbiquityContainerIdentifier: forUbiquityContainerIdentifier)?.appendingPathComponent("Documents") else {
+            return nil
         }
+        
+        guard !FileManager.default.fileExists(atPath: url.path, isDirectory: nil) else {
+            return url
+        }
+        
+        try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
+        
+        return url
     }
 }
