@@ -15,6 +15,20 @@ public protocol URLWritable {
 
 public typealias URLReadableWritable = URLReadable & URLWritable
 
+// MARK: - Extensions -
+
+extension URLReadable {
+    public static func read(from path: FilePath) throws -> Self {
+        try read(from: path.resolveFileURL())
+    }
+}
+
+extension URLWritable {
+    public func write(to path: FilePath, atomically: Bool) throws {
+        try write(to: path.resolveFileURL(), atomically: atomically)
+    }
+}
+
 // MARK: - Conformances -
 
 extension Array: URLReadable, URLWritable where Element == AnyObject {

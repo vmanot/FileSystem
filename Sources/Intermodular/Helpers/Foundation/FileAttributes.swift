@@ -86,16 +86,6 @@ extension FileAttributes {
 
 // MARK: - Helpers -
 
-extension FilesystemItem {
-    public func attributes() throws -> FileAttributes {
-        return .init(try FileManager.default.attributesOfItem(atPath: resolveFilePath().stringValue))
-    }
-    
-    public func setAttributes(_ attributes: FileAttributes) throws {
-        return try FileManager.default.setAttributes(attributes.value, ofItemAtPath: resolveFilePath().stringValue)
-    }
-}
-
 extension FilePath {
     public func resolveFileAttributes() throws -> FileAttributes {
         return FileAttributes(try FileManager.default.attributesOfItem(atPath: stringValue))

@@ -53,7 +53,9 @@ extension FileLocation: FileLocationResolvable {
 }
 
 extension FilePath: FileLocationResolvable {
-    
+    public func resolveFileLocation() throws -> FileLocation {
+        try .init(_unsafe: URL(self).unwrap())
+    }
 }
 
 extension String: FileLocationResolvable {
