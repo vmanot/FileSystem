@@ -100,7 +100,7 @@ extension FileManager {
     }
     
     public func removeItemIfNecessary(at url: URL) throws {
-        guard !fileExists(at: url) else {
+        guard fileExists(at: url) else {
             return
         }
         
