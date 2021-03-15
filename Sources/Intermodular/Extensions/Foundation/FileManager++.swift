@@ -35,24 +35,22 @@ extension FileManager {
         
         return isReadableFile(atPath: url.path) && isWritableFile(atPath: url.path)
     }
-
+    
     public func suburls<T: URLRepresentable>(at location: T) throws -> [T] {
         try contentsOfDirectory(atPath: location.url.path)
             .lazy
             .map({ location.url.appendingPathComponent($0) })
             .map({ try T(url: $0).unwrap() })
     }
-
-    public func enumerateRecursively<T: URLRepresentable>(
-        at location: T,
+    
+    public func enumerateRecursively(
+        at url: URL,
         includingPropertiesForKeys keys: [URLResourceKey]? = nil,
         options mask: FileManager.DirectoryEnumerationOptions = [],
-        body: (T) throws -> Void
+        body: (URL) throws -> Void
     ) throws {
-        let url = location.url
-        
         if !isDirectory(at: url) {
-            return try body(location)
+            return try body(url)
         }
         
         var errorEncountered: Error? = nil
@@ -70,21 +68,21 @@ extension FileManager {
             return
         }
         
-        var locations: [T] = []
+        var urls: [URL] = []
         
         for case let fileURL as URL in enumerator {
             if let keys = keys {
                 let _ = try fileURL.resourceValues(forKeys: .init(keys))
             }
             
-            locations.append(try T.init(url: fileURL).unwrap())
+            urls.append(fileURL)
         }
+        
+        try urls.forEach(body)
         
         if let error = errorEncountered {
             throw error
         }
-        
-        try locations.forEach(body)
     }
 }
 

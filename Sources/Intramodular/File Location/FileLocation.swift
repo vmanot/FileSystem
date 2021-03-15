@@ -74,6 +74,12 @@ extension FileLocation: Codable {
     }
 }
 
+extension FileLocation: CustomStringConvertible {
+    public var description: String {
+        url.description
+    }
+}
+
 extension FileLocation: RawRepresentable  {
     public var rawValue: String {
         url.path
