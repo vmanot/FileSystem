@@ -13,7 +13,7 @@ public struct DispatchFileSystemEvents: _opaque_RawRepresentable, Codable, Hasha
     }
 }
 
-// MARK: - Protocol Conformances -
+// MARK: - Conformances -
 
 extension DispatchFileSystemEvents: CustomStringConvertibleOptionSet {
     public static let delete = with(rawValue: DispatchSource.FileSystemEvent.delete.rawValue)

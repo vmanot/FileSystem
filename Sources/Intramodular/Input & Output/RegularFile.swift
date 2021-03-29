@@ -94,7 +94,7 @@ extension RegularFile {
     }
 }
 
-// MARK: - Protocol Conformances -
+// MARK: - Conformances -
 
 extension RegularFile: FileLocationResolvable {
     public func resolveFileLocation() throws -> FileLocation {

@@ -20,7 +20,7 @@ extension FSEvent {
     }
 }
 
-// MARK: - Protocol Conformances -
+// MARK: - Conformances -
 
 extension FSEvent.Flags: CustomStringConvertibleOptionSet {
     #if os(macOS)

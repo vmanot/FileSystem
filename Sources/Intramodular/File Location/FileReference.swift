@@ -26,7 +26,7 @@ public struct FileReference: FileLocationResolvable, URLRepresentable {
     }
 }
 
-// MARK: - Protocol Conformances -
+// MARK: - Conformances -
 
 extension FileReference: CustomStringConvertible {
     public var description: String {

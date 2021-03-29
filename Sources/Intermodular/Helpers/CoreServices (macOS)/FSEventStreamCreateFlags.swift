@@ -21,7 +21,7 @@ public struct FSEventStreamCreateFlags: RawRepresentable {
     }
 }
 
-// MARK: - Protocol Conformances -
+// MARK: - Conformances -
 
 extension FSEventStreamCreateFlags: CustomStringConvertibleOptionSet {
     #if os(macOS)

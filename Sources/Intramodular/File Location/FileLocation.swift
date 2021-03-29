@@ -41,7 +41,7 @@ public struct FileLocation: Hashable, Identifiable, URLRepresentable {
     }
 }
 
-// MARK: - Protocol Conformances -
+// MARK: - Conformances -
 
 extension FileLocation: Codable {
     public enum CodingKeys: String, CodingKey {
